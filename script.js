@@ -7,13 +7,30 @@ hamburger.addEventListener('click', () => {
   navLinks.classList.toggle('open');
 });
 
-// Close mobile menu after click
 document.querySelectorAll('.nav-link').forEach(link => {
   link.addEventListener('click', () => {
     hamburger.classList.remove('open');
     navLinks.classList.remove('open');
   });
 });
+
+// ====== Load code from .txt files ======
+async function loadCodeBlocks() {
+  const blocks = document.querySelectorAll('code[data-src]');
+  await Promise.all([...blocks].map(async (el) => {
+    const src = el.getAttribute('data-src');
+    try {
+      const res = await fetch(src, { cache: 'no-cache' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const text = await res.text();
+      el.textContent = text; // textContent auto-escapes < > &
+    } catch (err) {
+      el.textContent = `// Failed to load ${src}\n// ${err.message}\n// If you opened this file directly (file://), run a local server:\n//   python -m http.server\n// then open http://localhost:8000`;
+      el.classList.add('load-error');
+    }
+  }));
+}
+loadCodeBlocks();
 
 // ====== Active nav link on scroll ======
 const sections = document.querySelectorAll('.algo-section');
@@ -42,7 +59,6 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
     try {
       await navigator.clipboard.writeText(text);
     } catch {
-      // Fallback
       const ta = document.createElement('textarea');
       ta.value = text;
       document.body.appendChild(ta);
