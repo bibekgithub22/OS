@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CPU Scheduling Algorithms in C++</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="logo">&lt;CPU/Scheduler&gt;</a>
+      <nav>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#fcfs" class="nav-link">FCFS</a></li>
+          <li><a href="#sjf" class="nav-link">SJF</a></li>
+          <li><a href="#srtf" class="nav-link">SRTF</a></li>
+          <li><a href="#rr" class="nav-link">Round Robin</a></li>
+        </ul>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="hero" class="hero">
+    <div class="hero-content fade-in">
+      <h1 class="hero-title">CPU Scheduling Algorithms <span class="grad">in C++</span></h1>
+      <p class="hero-subtitle">
+        A clean collection of classic CPU scheduling algorithms — implemented, documented, and ready to copy.
+      </p>
+      <div class="hero-cta">
+        <a href="#fcfs" class="btn btn-primary">Explore Algorithms</a>
+        <a href="#rr" class="btn btn-ghost">Jump to Round Robin</a>
+      </div>
+    </div>
+    <div class="hero-glow"></div>
+  </section>
+
+  <main class="container">
+
+    <!-- FCFS -->
+    <section id="fcfs" class="algo-section fade-in">
+      <div class="card glass">
+        <div class="card-head">
+          <h2>First-Come, First-Served (FCFS)</h2>
+          <p>Processes are executed strictly in the order they arrive in the ready queue. Simple, non-preemptive, but can suffer from the convoy effect.</p>
+        </div>
+        <div class="code-wrapper">
+          <button class="copy-btn" data-target="code-fcfs">Copy Code</button>
+          <pre class="code-block"><code id="code-fcfs" class="cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; "Enter number of processes: ";
+    cin &gt;&gt; n;
+
+    int bt[n], wt[n], tat[n];
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; "Burst time P" &lt;&lt; i + 1 &lt;&lt; ": ";
+        cin &gt;&gt; bt[i];
+    }
+
+    wt[0] = 0;
+    for (int i = 1; i &lt; n; i++)
+        wt[i] = wt[i - 1] + bt[i - 1];
+
+    for (int i = 0; i &lt; n; i++)
+        tat[i] = wt[i] + bt[i];
+
+    cout &lt;&lt; "P\tBT\tWT\tTAT\n";
+    for (int i = 0; i &lt; n; i++)
+        cout &lt;&lt; i + 1 &lt;&lt; "\t" &lt;&lt; bt[i] &lt;&lt; "\t" &lt;&lt; wt[i] &lt;&lt; "\t" &lt;&lt; tat[i] &lt;&lt; "\n";
+    return 0;
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SJF -->
+    <section id="sjf" class="algo-section fade-in">
+      <div class="card glass">
+        <div class="card-head">
+          <h2>Shortest Job First (SJF)</h2>
+          <p>Non-preemptive scheduling that picks the process with the smallest burst time next. Optimal average waiting time when burst times are known.</p>
+        </div>
+        <div class="code-wrapper">
+          <button class="copy-btn" data-target="code-sjf">Copy Code</button>
+          <pre class="code-block"><code id="code-sjf" class="cpp">#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; "Enter number of processes: ";
+    cin &gt;&gt; n;
+
+    int bt[n], wt[n], tat[n], p[n];
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; "Burst time P" &lt;&lt; i + 1 &lt;&lt; ": ";
+        cin &gt;&gt; bt[i];
+        p[i] = i + 1;
+    }
+
+    for (int i = 0; i &lt; n - 1; i++)
+        for (int j = 0; j &lt; n - i - 1; j++)
+            if (bt[j] &gt; bt[j + 1]) {
+                swap(bt[j], bt[j + 1]);
+                swap(p[j], p[j + 1]);
+            }
+
+    wt[0] = 0;
+    for (int i = 1; i &lt; n; i++)
+        wt[i] = wt[i - 1] + bt[i - 1];
+
+    for (int i = 0; i &lt; n; i++)
+        tat[i] = wt[i] + bt[i];
+
+    cout &lt;&lt; "P\tBT\tWT\tTAT\n";
+    for (int i = 0; i &lt; n; i++)
+        cout &lt;&lt; p[i] &lt;&lt; "\t" &lt;&lt; bt[i] &lt;&lt; "\t" &lt;&lt; wt[i] &lt;&lt; "\t" &lt;&lt; tat[i] &lt;&lt; "\n";
+    return 0;
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- SRTF -->
+    <section id="srtf" class="algo-section fade-in">
+      <div class="card glass">
+        <div class="card-head">
+          <h2>Shortest Remaining Time First (SRTF)</h2>
+          <p>Preemptive variant of SJF — at every time unit, the process with the smallest remaining burst time is selected.</p>
+        </div>
+        <div class="code-wrapper">
+          <button class="copy-btn" data-target="code-srtf">Copy Code</button>
+          <pre class="code-block"><code id="code-srtf" class="cpp">#include &lt;iostream&gt;
+#include &lt;climits&gt;
+using namespace std;
+
+int main() {
+    int n;
+    cout &lt;&lt; "Enter number of processes: ";
+    cin &gt;&gt; n;
+
+    int bt[n], at[n], rt[n], wt[n], tat[n];
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; "Arrival, Burst P" &lt;&lt; i + 1 &lt;&lt; ": ";
+        cin &gt;&gt; at[i] &gt;&gt; bt[i];
+        rt[i] = bt[i];
+    }
+
+    int complete = 0, t = 0, minm = INT_MAX, shortest = 0, finish_time;
+    bool check = false;
+
+    while (complete != n) {
+        for (int j = 0; j &lt; n; j++) {
+            if (at[j] &lt;= t &amp;&amp; rt[j] &lt; minm &amp;&amp; rt[j] &gt; 0) {
+                minm = rt[j];
+                shortest = j;
+                check = true;
+            }
+        }
+        if (!check) { t++; continue; }
+        rt[shortest]--;
+        minm = rt[shortest] ? rt[shortest] : INT_MAX;
+        if (rt[shortest] == 0) {
+            complete++;
+            check = false;
+            finish_time = t + 1;
+            wt[shortest] = finish_time - bt[shortest] - at[shortest];
+            if (wt[shortest] &lt; 0) wt[shortest] = 0;
+        }
+        t++;
+    }
+
+    for (int i = 0; i &lt; n; i++) tat[i] = bt[i] + wt[i];
+    cout &lt;&lt; "P\tBT\tWT\tTAT\n";
+    for (int i = 0; i &lt; n; i++)
+        cout &lt;&lt; i + 1 &lt;&lt; "\t" &lt;&lt; bt[i] &lt;&lt; "\t" &lt;&lt; wt[i] &lt;&lt; "\t" &lt;&lt; tat[i] &lt;&lt; "\n";
+    return 0;
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Round Robin -->
+    <section id="rr" class="algo-section fade-in">
+      <div class="card glass">
+        <div class="card-head">
+          <h2>Round Robin (RR)</h2>
+          <p>Each process gets a fixed time slice (quantum) in cyclic order. Fair, preemptive, and widely used in time-sharing systems.</p>
+        </div>
+        <div class="code-wrapper">
+          <button class="copy-btn" data-target="code-rr">Copy Code</button>
+          <pre class="code-block"><code id="code-rr" class="cpp">#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+    int n, quantum;
+    cout &lt;&lt; "Enter number of processes: ";
+    cin &gt;&gt; n;
+    cout &lt;&lt; "Enter time quantum: ";
+    cin &gt;&gt; quantum;
+
+    int bt[n], rem_bt[n], wt[n], tat[n];
+    for (int i = 0; i &lt; n; i++) {
+        cout &lt;&lt; "Burst time P" &lt;&lt; i + 1 &lt;&lt; ": ";
+        cin &gt;&gt; bt[i];
+        rem_bt[i] = bt[i];
+    }
+
+    int t = 0;
+    while (true) {
+        bool done = true;
+        for (int i = 0; i &lt; n; i++) {
+            if (rem_bt[i] &gt; 0) {
+                done = false;
+                if (rem_bt[i] &gt; quantum) {
+                    t += quantum;
+                    rem_bt[i] -= quantum;
+                } else {
+                    t += rem_bt[i];
+                    wt[i] = t - bt[i];
+                    rem_bt[i] = 0;
+                }
+            }
+        }
+        if (done) break;
+    }
+
+    for (int i = 0; i &lt; n; i++) tat[i] = bt[i] + wt[i];
+    cout &lt;&lt; "P\tBT\tWT\tTAT\n";
+    for (int i = 0; i &lt; n; i++)
+        cout &lt;&lt; i + 1 &lt;&lt; "\t" &lt;&lt; bt[i] &lt;&lt; "\t" &lt;&lt; wt[i] &lt;&lt; "\t" &lt;&lt; tat[i] &lt;&lt; "\n";
+    return 0;
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> CPU Scheduling Algorithms · Built with vanilla HTML, CSS &amp; JS</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
