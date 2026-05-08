@@ -1,42 +1,86 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
 int main() {
-    int n, quantum;
-    cout << "Enter number of processes: ";
-    cin >> n;
-    cout << "Enter time quantum: ";
-    cin >> quantum;
 
-    int bt[n], rem_bt[n], wt[n], tat[n];
-    for (int i = 0; i < n; i++) {
-        cout << "Burst time P" << i + 1 << ": ";
-        cin >> bt[i];
-        rem_bt[i] = bt[i];
+    int n, tq;
+
+    cout<<"Enter number of processes: ";
+    cin>>n;
+
+    int at[n], bt[n], rt[n];
+    int ct[n], tat[n], wt[n];
+
+    for(int i=0;i<n;i++) {
+
+        cout<<"\nEnter AT and BT for P"<<i+1<<": ";
+        cin>>at[i]>>bt[i];
+
+        rt[i]=bt[i];
     }
 
-    int t = 0;
-    while (true) {
-        bool done = true;
-        for (int i = 0; i < n; i++) {
-            if (rem_bt[i] > 0) {
-                done = false;
-                if (rem_bt[i] > quantum) {
-                    t += quantum;
-                    rem_bt[i] -= quantum;
-                } else {
-                    t += rem_bt[i];
-                    wt[i] = t - bt[i];
-                    rem_bt[i] = 0;
+    cout<<"\nEnter Time Quantum: ";
+    cin>>tq;
+
+    int time=0, completed=0;
+
+    while(completed<n) {
+
+        bool found=false;
+
+        for(int i=0;i<n;i++) {
+
+            if(at[i]<=time && rt[i]>0) {
+
+                found=true;
+
+                if(rt[i]>tq) {
+
+                    time += tq;
+
+                    rt[i] -= tq;
+                }
+
+                else {
+
+                    time += rt[i];
+
+                    ct[i]=time;
+
+                    tat[i]=ct[i]-at[i];
+
+                    wt[i]=tat[i]-bt[i];
+
+                    rt[i]=0;
+
+                    completed++;
                 }
             }
         }
-        if (done) break;
+
+        if(found==false)
+            time++;
     }
 
-    for (int i = 0; i < n; i++) tat[i] = bt[i] + wt[i];
-    cout << "P\tBT\tWT\tTAT\n";
-    for (int i = 0; i < n; i++)
-        cout << i + 1 << "\t" << bt[i] << "\t" << wt[i] << "\t" << tat[i] << "\n";
-    return 0;
+    float avgWT=0, avgTAT=0;
+
+    cout<<"\nP\tAT\tBT\tCT\tTAT\tWT\n";
+
+    for(int i=0;i<n;i++) {
+
+        avgWT += wt[i];
+
+        avgTAT += tat[i];
+
+        cout<<"P"<<i+1<<"\t"
+            <<at[i]<<"\t"
+            <<bt[i]<<"\t"
+            <<ct[i]<<"\t"
+            <<tat[i]<<"\t"
+            <<wt[i]<<endl;
+    }
+
+    cout<<"\nAverage WT = "<<avgWT/n;
+
+    cout<<"\nAverage TAT = "<<avgTAT/n;
 }
