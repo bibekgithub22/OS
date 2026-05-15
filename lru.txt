@@ -1,0 +1,69 @@
+#include<iostream>
+using namespace std;
+
+int main() {
+
+    int n, frames;
+
+    cout<<"Enter number of pages: ";
+    cin>>n;
+
+    int pages[n];
+
+    cout<<"Enter page sequence: ";
+
+    for(int i=0;i<n;i++) {
+        cin>>pages[i];
+    }
+
+    cout<<"Enter number of frames: ";
+    cin>>frames;
+
+    int f[frames], recent[frames];
+
+    for(int i=0;i<frames;i++) {
+
+        f[i]=-1;
+        recent[i]=0;
+    }
+
+    int faults=0, time=0;
+
+    for(int i=0;i<n;i++) {
+
+        bool found=false;
+
+        for(int j=0;j<frames;j++) {
+
+            if(f[j]==pages[i]) {
+
+                found=true;
+
+                recent[j]=++time;
+
+                break;
+            }
+        }
+
+        if(!found) {
+
+            int pos=0;
+
+            for(int j=1;j<frames;j++) {
+
+                if(recent[j]<recent[pos])
+                    pos=j;
+            }
+
+            f[pos]=pages[i];
+
+            recent[pos]=++time;
+
+            faults++;
+        }
+    }
+
+    cout<<"\nPage Faults = "<<faults;
+
+    return 0;
+}

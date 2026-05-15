@@ -1,109 +1,271 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CPU Scheduling Algorithms in C++</title>
-<link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <!-- Navbar -->
-  <header class="navbar">
-    <div class="nav-container">
-      <a href="#hero" class="logo">&lt;CPU/Scheduler&gt;</a>
-      <nav>
-        <ul class="nav-links" id="navLinks">
-          <li><a href="#fcfs" class="nav-link">FCFS</a></li>
-          <li><a href="#sjf" class="nav-link">SJF</a></li>
-          <li><a href="#srtf" class="nav-link">SRTF</a></li>
-          <li><a href="#rr" class="nav-link">Round Robin</a></li>
-        </ul>
-      </nav>
-      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-        <span></span><span></span><span></span>
-      </button>
-    </div>
-  </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Operating System Algorithms in C++</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="navbar">
+      <div class="nav-container">
+        <a href="#hero" class="logo">&lt;CPU/Scheduler&gt;</a>
+        <nav>
+          <ul class="nav-links" id="navLinks">
+            <li><a href="#fcfs" class="nav-link">FCFS</a></li>
+            <li><a href="#sjf" class="nav-link">SJF</a></li>
+            <li><a href="#srtf" class="nav-link">SRTF</a></li>
+            <li><a href="#rr" class="nav-link">Round Robin</a></li>
+            <li>
+              <a href="#ps_p" class="nav-link"
+                >Priority Scheduling Preemptive</a
+              >
+            </li>
+            <li>
+              <a href="#ps_np" class="nav-link"
+                >Priority Scheduling Non-Preemptive</a
+              >
+            </li>
+            <li><a href="#bank" class="nav-link">Banker's Algorithm</a></li>
+            <li><a href="#fifo" class="nav-link">FIFO</a></li>
+            <li>
+              <a href="#Optimal" class="nav-link">Optimal Page Replacement</a>
+            </li>
+            <li><a href="#LRU" class="nav-link">LRU Page Replacement</a></li>
+          </ul>
+        </nav>
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </header>
 
-  <!-- Hero -->
-  <section id="hero" class="hero">
-    <div class="hero-content fade-in">
-      <h1 class="hero-title">CPU Scheduling Algorithms <span class="grad">in C++</span></h1>
-      <p class="hero-subtitle">
-        A clean collection of classic CPU scheduling algorithms — implemented, documented, and ready to copy.
+    <!-- Hero -->
+    <section id="hero" class="hero">
+      <div class="hero-content fade-in">
+        <h1 class="hero-title">
+          Operating System Algorithms <span class="grad">in C++</span>
+        </h1>
+        <p class="hero-subtitle">
+          A clean collection of classic OS algorithms including CPU scheduling,
+          page replacement, and deadlock avoidance — implemented, documented,
+          and ready to copy.
+        </p>
+        <div class="hero-cta">
+          <a href="#fcfs" class="btn btn-primary">Explore Algorithms</a>
+          <a href="#ps_p" class="btn btn-ghost">Jump to Priority Scheduling</a>
+        </div>
+      </div>
+      <div class="hero-glow"></div>
+    </section>
+
+    <main class="container">
+      <!-- FCFS -->
+      <section id="fcfs" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>First-Come, First-Served (FCFS)</h2>
+            <p>
+              Processes are executed strictly in the order they arrive in the
+              ready queue. Simple, non-preemptive, but can suffer from the
+              convoy effect.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-fcfs">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-fcfs" class="cpp" data-src="fcfs.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- SJF -->
+      <section id="sjf" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>Shortest Job First (SJF)</h2>
+            <p>
+              Non-preemptive scheduling that picks the process with the smallest
+              burst time next. Optimal average waiting time when burst times are
+              known.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-sjf">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-sjf" class="cpp" data-src="sjf.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- SRTF -->
+      <section id="srtf" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>Shortest Remaining Time First (SRTF)</h2>
+            <p>
+              Preemptive variant of SJF — at every time unit, the process with
+              the smallest remaining burst time is selected.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-srtf">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-srtf" class="cpp" data-src="srtf.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Round Robin -->
+      <section id="rr" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>Round Robin (RR)</h2>
+            <p>
+              Each process gets a fixed time slice (quantum) in cyclic order.
+              Fair, preemptive, and widely used in time-sharing systems.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-rr">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-rr" class="cpp" data-src="round-robin.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Priority Scheduling Preemptive -->
+      <section id="ps_p" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>Priority Scheduling (Preemptive)</h2>
+            <p>
+              Processes are assigned priorities, and the highest priority
+              process runs until completion or a higher priority process
+              arrives. Preemptive version allows interruption.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-ps_p">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-ps_p" class="cpp" data-src="ps_pre.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Priority Scheduling Non-Preemptive -->
+      <section id="ps_np" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>Priority Scheduling (Non-Preemptive)</h2>
+            <p>
+              Processes are assigned priorities, and the highest priority
+              process runs to completion without interruption. Non-preemptive
+              version ensures no preemption.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-ps_np">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-ps_np" class="cpp" data-src="ps_nonpre.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Banker's Algorithm -->
+      <section id="bank" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>Banker's Algorithm</h2>
+            <p>
+              A deadlock avoidance algorithm that tests for safety by simulating
+              the allocation of resources to processes in a specific order.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-bank">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-bank" class="cpp" data-src="bankers.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- FIFO Page Replacement -->
+      <section id="fifo" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>FIFO Page Replacement</h2>
+            <p>
+              First-In, First-Out page replacement algorithm. The oldest page in
+              memory is replaced when a page fault occurs.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-fifo">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-fifo" class="cpp" data-src="fifo.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- Optimal Page Replacement -->
+      <section id="Optimal" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>Optimal Page Replacement</h2>
+            <p>
+              Replaces the page that will not be used for the longest time in
+              the future. Optimal but requires future knowledge, used as a
+              benchmark.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-Optimal">
+              Copy Code
+            </button>
+            <pre
+              class="code-block"
+            ><code id="code-Optimal" class="cpp" data-src="optimal page replacement.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- LRU Page Replacement -->
+      <section id="LRU" class="algo-section fade-in">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>LRU Page Replacement</h2>
+            <p>
+              Least Recently Used page replacement algorithm. Replaces the page
+              that has not been used for the longest time.
+            </p>
+          </div>
+          <div class="code-wrapper">
+            <button class="copy-btn" data-target="code-LRU">Copy Code</button>
+            <pre
+              class="code-block"
+            ><code id="code-LRU" class="cpp" data-src="lru.txt">Loading…</code></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>
+        © <span id="year"></span> Operating System Algorithms · Built with
+        vanilla HTML, CSS &amp; JS
       </p>
-      <div class="hero-cta">
-        <a href="#fcfs" class="btn btn-primary">Explore Algorithms</a>
-        <a href="#rr" class="btn btn-ghost">Jump to Round Robin</a>
-      </div>
-    </div>
-    <div class="hero-glow"></div>
-  </section>
+    </footer>
 
-  <main class="container">
-
-    <!-- FCFS -->
-    <section id="fcfs" class="algo-section fade-in">
-      <div class="card glass">
-        <div class="card-head">
-          <h2>First-Come, First-Served (FCFS)</h2>
-          <p>Processes are executed strictly in the order they arrive in the ready queue. Simple, non-preemptive, but can suffer from the convoy effect.</p>
-        </div>
-        <div class="code-wrapper">
-          <button class="copy-btn" data-target="code-fcfs">Copy Code</button>
-          <pre class="code-block"><code id="code-fcfs" class="cpp" data-src="fcfs.txt">Loading…</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <!-- SJF -->
-    <section id="sjf" class="algo-section fade-in">
-      <div class="card glass">
-        <div class="card-head">
-          <h2>Shortest Job First (SJF)</h2>
-          <p>Non-preemptive scheduling that picks the process with the smallest burst time next. Optimal average waiting time when burst times are known.</p>
-        </div>
-        <div class="code-wrapper">
-          <button class="copy-btn" data-target="code-sjf">Copy Code</button>
-          <pre class="code-block"><code id="code-sjf" class="cpp" data-src="sjf.txt">Loading…</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <!-- SRTF -->
-    <section id="srtf" class="algo-section fade-in">
-      <div class="card glass">
-        <div class="card-head">
-          <h2>Shortest Remaining Time First (SRTF)</h2>
-          <p>Preemptive variant of SJF — at every time unit, the process with the smallest remaining burst time is selected.</p>
-        </div>
-        <div class="code-wrapper">
-          <button class="copy-btn" data-target="code-srtf">Copy Code</button>
-          <pre class="code-block"><code id="code-srtf" class="cpp" data-src="srtf.txt">Loading…</code></pre>
-        </div>
-      </div>
-    </section>
-
-    <!-- Round Robin -->
-    <section id="rr" class="algo-section fade-in">
-      <div class="card glass">
-        <div class="card-head">
-          <h2>Round Robin (RR)</h2>
-          <p>Each process gets a fixed time slice (quantum) in cyclic order. Fair, preemptive, and widely used in time-sharing systems.</p>
-        </div>
-        <div class="code-wrapper">
-          <button class="copy-btn" data-target="code-rr">Copy Code</button>
-          <pre class="code-block"><code id="code-rr" class="cpp" data-src="round-robin.txt">Loading…</code></pre>
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <footer class="footer">
-    <p>© <span id="year"></span> CPU Scheduling Algorithms · Built with vanilla HTML, CSS &amp; JS</p>
-  </footer>
-
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

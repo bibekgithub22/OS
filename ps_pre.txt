@@ -1,0 +1,88 @@
+#include<iostream>
+using namespace std;
+
+int main() {
+
+    int n;
+
+    cout<<"Enter number of processes: ";
+    cin>>n;
+
+    int at[n], bt[n], rt[n], pr[n];
+    int ct[n], tat[n], wt[n];
+
+    for(int i=0;i<n;i++) {
+
+        cout<<"\nEnter AT BT Priority for P"<<i+1<<": ";
+        cin>>at[i]>>bt[i]>>pr[i];
+
+        rt[i]=bt[i];
+    }
+
+    int time=0, completed=0;
+
+    while(completed<n) {
+
+        int min=9999, index=-1;
+
+        for(int i=0;i<n;i++) {
+
+            if(at[i]<=time &&
+               rt[i]>0 &&
+               pr[i]<min) {
+
+                min=pr[i];
+
+                index=i;
+            }
+        }
+
+        if(index==-1) {
+
+            time++;
+        }
+
+        else {
+
+            rt[index]--;
+
+            time++;
+
+            if(rt[index]==0) {
+
+                ct[index]=time;
+
+                tat[index]=ct[index]-at[index];
+
+                wt[index]=tat[index]-bt[index];
+
+                completed++;
+            }
+        }
+    }
+
+    float avgWT=0, avgTAT=0;
+
+    cout<<"\nP\tAT\tBT\tPR\tCT\tTAT\tWT\n";
+
+    for(int i=0;i<n;i++) {
+
+        avgWT += wt[i];
+
+        avgTAT += tat[i];
+
+        cout<<"P"<<i+1<<"\t"
+            <<at[i]<<"\t"
+            <<bt[i]<<"\t"
+            <<pr[i]<<"\t"
+            <<ct[i]<<"\t"
+            <<tat[i]<<"\t"
+            <<wt[i]<<endl;
+    }
+
+    cout<<"\nAverage WT = "<<avgWT/n;
+
+    cout<<"\nAverage TAT = "<<avgTAT/n;
+
+    return 0;
+}

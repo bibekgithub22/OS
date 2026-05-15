@@ -1,0 +1,76 @@
+#include<iostream>
+using namespace std;
+
+int main() {
+
+    int n, frames;
+
+    cout<<"Enter number of pages: ";
+    cin>>n;
+
+    int pages[n];
+
+    cout<<"Enter page sequence: ";
+
+    for(int i=0;i<n;i++) {
+        cin>>pages[i];
+    }
+
+    cout<<"Enter number of frames: ";
+    cin>>frames;
+
+    int f[frames];
+
+    for(int i=0;i<frames;i++)
+        f[i]=-1;
+
+    int faults=0;
+
+    for(int i=0;i<n;i++) {
+
+        bool found=false;
+
+        for(int j=0;j<frames;j++) {
+
+            if(f[j]==pages[i]) {
+
+                found=true;
+                break;
+            }
+        }
+
+        if(!found) {
+
+            int pos=-1, farthest=i;
+
+            for(int j=0;j<frames;j++) {
+
+                int k;
+
+                for(k=i+1;k<n;k++) {
+
+                    if(f[j]==pages[k]) {
+                        break;
+                    }
+                }
+
+                if(k>farthest) {
+
+                    farthest=k;
+                    pos=j;
+                }
+            }
+
+            if(pos==-1)
+                pos=0;
+
+            f[pos]=pages[i];
+
+            faults++;
+        }
+    }
+
+    cout<<"\nPage Faults = "<<faults;
+
+    return 0;
+}

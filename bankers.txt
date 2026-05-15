@@ -1,0 +1,119 @@
+#include<iostream>
+using namespace std;
+
+int main() {
+
+    int n, r;
+
+    cout<<"Enter number of processes: ";
+    cin>>n;
+
+    cout<<"Enter number of resources: ";
+    cin>>r;
+
+    int alloc[n][r], max[n][r], need[n][r];
+    int available[r];
+
+    // Allocation Matrix
+    cout<<"\nEnter Allocation Matrix:\n";
+
+    for(int i=0;i<n;i++) {
+
+        for(int j=0;j<r;j++) {
+
+            cin>>alloc[i][j];
+        }
+    }
+
+    // Max Matrix
+    cout<<"\nEnter Max Matrix:\n";
+
+    for(int i=0;i<n;i++) {
+
+        for(int j=0;j<r;j++) {
+
+            cin>>max[i][j];
+        }
+    }
+
+    // Available Resources
+    cout<<"\nEnter Available Resources:\n";
+
+    for(int i=0;i<r;i++) {
+
+        cin>>available[i];
+    }
+
+    // Need Matrix
+    for(int i=0;i<n;i++) {
+
+        for(int j=0;j<r;j++) {
+
+            need[i][j] = max[i][j] - alloc[i][j];
+        }
+    }
+
+    bool finished[n]={0};
+
+    int safeSeq[n];
+
+    int count=0;
+
+    while(count<n) {
+
+        bool found=false;
+
+        for(int i=0;i<n;i++) {
+
+            if(finished[i]==0) {
+
+                bool safe=true;
+
+                for(int j=0;j<r;j++) {
+
+                    if(need[i][j] > available[j]) {
+
+                        safe=false;
+
+                        break;
+                    }
+                }
+
+                if(safe) {
+
+                    for(int j=0;j<r;j++) {
+
+                        available[j] += alloc[i][j];
+                    }
+
+                    safeSeq[count]=i;
+
+                    count++;
+
+                    finished[i]=1;
+
+                    found=true;
+                }
+            }
+        }
+
+        if(found==false) {
+
+            cout<<"\nDeadlock Occurred";
+
+            return 0;
+        }
+    }
+
+    cout<<"\nSafe Sequence: ";
+
+    for(int i=0;i<n;i++) {
+
+        cout<<"P"<<safeSeq[i];
+
+        if(i!=n-1)
+            cout<<" -> ";
+    }
+
+    return 0;
+}
